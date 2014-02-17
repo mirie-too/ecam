@@ -26,6 +26,10 @@
 
 namespace ecam {
 
+/**
+  * In non-c++11 mode TinyThread++ library is used for threading support.
+  */
+
 #ifdef LIBECAM_USE_CPP11
 #else
 using tthread::lock_guard;

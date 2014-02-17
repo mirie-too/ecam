@@ -26,20 +26,53 @@ namespace ecam {
 
 using std::vector;
 
+/**
+ * The LocalCamera class controls local capturing devices connected via USB, PCI
+ * buses etc. Only cameras which are visible to V4L2 (Linux) and DirectShow
+ * (Windows) are supported.
+ */
 class LocalCamera : public Camera
 {
   public:
+    /**
+     * This enum is used to cpecify the I/O mode to be used. In the most cases
+     * MMAP is an excellent choise here.
+     */
     enum IOMethod { READ, MMAP };
 
+    /**
+     * @return List of all available local video devices.
+     *         Quering capabilities is needed to extract cameras only.
+     */
     static vector<string> devices();
 
     LocalCamera();
 
+    /**
+     * @return Name of the camera in platform-dependant form.
+     */
     const string &deviceName() const { return m_deviceName; }
+
+    /**
+     * @return Name of the camera casted to const char *.
+     */
     const char *c_deviceName() const { return m_deviceName.c_str(); }
+
+    /**
+     * Sets a new camera device. Camera must be closed.
+     * @param deviceName
+     */
     void setDeviceName(const string &deviceName);
 
+    /**
+     * @return I/O method currently used.
+     */
     IOMethod ioMethod() const { return m_ioMethod; }
+
+    /**
+     * Sets a new I/O method. Camera must be closed.
+     * @param ioMethod
+     */
     void setIoMethod(IOMethod ioMethod);
 
     virtual bool open();
@@ -55,6 +88,13 @@ class LocalCamera : public Camera
 
     virtual void run();
 
+    /**
+     * @internal
+     * Shortcut for ::ioctl()
+     * @param request
+     * @param argument
+     * @return
+     */
     int ioctl(int request, void *argument);
 
     bool openDevice();

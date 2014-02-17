@@ -22,10 +22,20 @@ namespace ecam {
 
 class Frame;
 
+/**
+ * The Decoder class provides an abstract interface for video decoders.
+ */
 class Decoder {
   public:
     virtual ~Decoder() {}
 
+    /**
+     * Performs actual decoding of frame data to RGB32 buffer.
+     * @param data raw frame data
+     * @param size frame data size in bytes
+     * @param frame Frame object to be filled in with RGB32.
+     * @return treu if no errors occured.
+     */
     virtual bool decode(const uint8_t *data, unsigned size, Frame &frame) = 0;
 };
 
